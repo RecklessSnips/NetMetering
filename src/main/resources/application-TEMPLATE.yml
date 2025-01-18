@@ -8,13 +8,13 @@ spring:
     oauth2:
       client:
         registration:
-#          google:
-#            client-id: Your id
-#            client-secret: Your secret
-#            scope:
-#              - openid
-#              - email
-#              - profile
+          google:
+            client-id: Your id
+            client-secret: Your secret
+            scope:
+              - openid
+              - email
+              - profile
 #              - https://www.googleapis.com/auth/user.phonenumbers.read
 #              - https://www.googleapis.com/auth/user.birthday.read
         provider:

@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: NetMetering
+  server:
+    port:
+      8080
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: 302016318701-6kph6r9auigar6i97dcop69nj3tuj5h1.apps.googleusercontent.com
+            client-secret: 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
+            scope:
+              - openid
+              - email
+              - profile
+#              - https://www.googleapis.com/auth/user.phonenumbers.read
+#              - https://www.googleapis.com/auth/user.birthday.read
+        provider:
+          google:
+            authorization-uri: https://accounts.google.com/o/oauth2/auth?prompt=select_account
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.coms

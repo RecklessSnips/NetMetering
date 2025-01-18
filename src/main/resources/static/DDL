@@ -1,0 +1,27 @@
+CREATE TABLE user (
+    userID VARCHAR(60) PRIMARY KEY,
+    given_name VARCHAR(255),
+    family_name VARCHAR(255),
+    full_name VARCHAR(255),
+    email VARCHAR(255),
+    location VARCHAR(255),
+    accountID VARCHAR(60) UNIQUE,  -- Foreign key linking to energy_account
+    FOREIGN KEY (accountID) REFERENCES energy_account(accountID) ON DELETE CASCADE
+);
+
+CREATE TABLE energy_account (
+    accountID VARCHAR(60) PRIMARY KEY,
+    email VARCHAR(255),
+    energyBalance DECIMAL(18, 5)  -- 18 digits precision, 5 digits scale
+);
+
+
+CREATE TABLE transaction (
+    transactionID VARCHAR(60) PRIMARY KEY,
+    fromAccountID VARCHAR(60),  -- Foreign key referencing energy_account
+    toAccountID VARCHAR(60),  -- Foreign key referencing energy_account
+    amount DECIMAL(18, 5),  -- Amount transferred in the transaction
+    dateTime TIMESTAMP,  -- Date and time of the transaction
+    FOREIGN KEY (fromAccountID) REFERENCES energy_account(accountID) ON DELETE CASCADE,
+    FOREIGN KEY (toAccountID) REFERENCES energy_account(accountID) ON DELETE CASCADE
+);

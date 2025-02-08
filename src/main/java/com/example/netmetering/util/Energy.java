@@ -15,8 +15,8 @@ public class Energy {
 
     private final BigDecimal PRICE = new BigDecimal("0.076");
 
-    public Energy(double usage){
-        this.kilowatts = BigDecimal.valueOf(usage);
+    public Energy(BigDecimal usage){
+        this.kilowatts = usage;
         this.dollar = this.kilowatts.multiply(PRICE).setScale(3, RoundingMode.HALF_UP);
     }
 
@@ -34,7 +34,7 @@ public class Energy {
     }
 
     public static void main(String[] args) {
-        Energy energy = new Energy(3000d);
+        Energy energy = new Energy(new BigDecimal("3000"));
         System.out.println(energy.getDollars());
         System.out.println(energy);
     }

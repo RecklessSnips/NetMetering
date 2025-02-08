@@ -7,6 +7,7 @@ import org.hibernate.annotations.OnDeleteAction;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.UUID;
 
 @Entity
 @Table(name = "transaction")
@@ -28,10 +29,16 @@ public class Transaction {
     private Date dateTime;
 
     public Transaction() {
+        long l = System.currentTimeMillis();
+        long id = l + 1L;
+        this.transactionID = String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 14) + id;
 
     }
 
     public Transaction(BigDecimal amount, EnergyAccount from, EnergyAccount to){
+        long l = System.currentTimeMillis();
+        long id = l + 1L;
+        this.transactionID = String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 14) + id;
         this.amount = amount;
         this.fromAccount = from;
         this.toAccount = to;

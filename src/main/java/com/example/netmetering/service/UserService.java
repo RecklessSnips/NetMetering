@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 @Service
 public class UserService {
@@ -34,6 +35,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public User findUserByEmail(String email){
+        Optional<User> byEmail = userRepository.findByEmail(email);
+        return byEmail.orElseThrow(() -> new AccountException("User doesn't exist"));
+    }
+
     public void deleteUser(User user){
         userRepository.delete(user);
     }
@@ -49,8 +55,9 @@ public class UserService {
             3. Adjust balance for both accounts
             4. Record this transaction
          */
-        BigDecimal energyBalance = user1.getAccount().getEnergyBalance();
+        BigDecimal energyBalance = user1.getAccount().getAvaliableBalance();
         if (energyBalance.compareTo(balance) < 0){
+            System.out.println("AHHO");
             throw new AccountException("Not enough energy balance!");
         }
         Transaction transaction = new Transaction(balance, user1.getAccount(), user2.getAccount());

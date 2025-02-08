@@ -12,7 +12,12 @@ CREATE TABLE user (
 CREATE TABLE energy_account (
     accountID VARCHAR(60) PRIMARY KEY,
     email VARCHAR(255),
-    energyBalance DECIMAL(18, 5)  -- 18 digits precision, 5 digits scale
+    energyBalance DECIMAL(18, 5),  -- 18 digits precision, 5 digits scale
+    availableBalance DECIMAL(18, 5),  -- 18 digits precision, 5 digits scale
+    transferedBalance DECIMAL(18, 5),  -- 18 digits precision, 5 digits scale
+    consumedBalance DECIMAL(18, 5),  -- 18 digits precision, 5 digits scale
+    cumulativeIncome DECIMAL(18, 5),
+    averageIncome DECIMAL(18, 5),
 );
 
 

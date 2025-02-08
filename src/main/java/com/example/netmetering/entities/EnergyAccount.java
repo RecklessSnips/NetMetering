@@ -15,6 +15,11 @@ public class EnergyAccount {
     private User user;
     private String email;
     private BigDecimal energyBalance;
+    private BigDecimal availableBalance;
+    private BigDecimal transferedBalance;
+    private BigDecimal consumedBalance;
+    private BigDecimal cumulativeIncome;
+    private BigDecimal averageIncome;
 
     public EnergyAccount(){
         long l = System.currentTimeMillis();
@@ -32,10 +37,12 @@ public class EnergyAccount {
 
     public void depositEnergy(BigDecimal amount){
         this.energyBalance = this.energyBalance.add(amount);
+        this.availableBalance = this.availableBalance.add(amount);
     }
 
     public void withdrawEnergy(BigDecimal amount){
         this.energyBalance = this.energyBalance.subtract(amount);
+        this.availableBalance = this.availableBalance.subtract(amount);
     }
 
     public String getAccountID() {
@@ -64,6 +71,46 @@ public class EnergyAccount {
 
     public void setEnergyBalance(BigDecimal energyBalance) {
         this.energyBalance = energyBalance;
+    }
+
+    public BigDecimal getAvaliableBalance() {
+        return availableBalance;
+    }
+
+    public void setAvaliableBalance(BigDecimal availableBalance) {
+        this.availableBalance = availableBalance;
+    }
+
+    public BigDecimal getTransferedBalance() {
+        return transferedBalance;
+    }
+
+    public BigDecimal getConsumedBalance() {
+        return consumedBalance;
+    }
+
+    public void setConsumedBalance(BigDecimal consumedBalance) {
+        this.consumedBalance = consumedBalance;
+    }
+
+    public BigDecimal getCumulativeIncome() {
+        return cumulativeIncome;
+    }
+
+    public void increaseTransferedBalance(BigDecimal balance){
+        this.transferedBalance = this.transferedBalance.add(balance);
+    }
+
+    public void increaseCumulativeIncome(BigDecimal dollar){
+        this.cumulativeIncome = this.cumulativeIncome.add(dollar);
+    }
+
+    public void decreaseCumulativeIncome(BigDecimal dollar){
+        this.cumulativeIncome = this.cumulativeIncome.subtract(dollar);
+    }
+
+    public BigDecimal getAverageIncome() {
+        return averageIncome;
     }
 
     @Override

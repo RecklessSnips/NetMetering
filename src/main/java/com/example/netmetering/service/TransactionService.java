@@ -5,6 +5,7 @@ import com.example.netmetering.entities.Transaction;
 import com.example.netmetering.entities.User;
 import com.example.netmetering.repository.TransactionRepository;
 import com.example.netmetering.repository.UserRepository;
+import com.example.netmetering.util.Energy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,16 +26,23 @@ public class TransactionService {
         EnergyAccount account2 = transaction.getToAccount();
         BigDecimal amount = transaction.getAmount();
 
+        // Transfer energy
         account1.withdrawEnergy(amount);
         account2.depositEnergy(amount);
+
+        // Increase account2's income, and decrease account1's
+        Energy energy = new Energy(amount);
+        // The dollar amount equivalent to the KWH produced
+        BigDecimal income = energy.getDollars();
+        // Start
+        account2.increaseCumulativeIncome(income);
+
+        // Increase account1's transfered balance
+        account1.increaseTransferedBalance(amount);
 
         transaction.setDateTime(new Date(System.currentTimeMillis()));
 
         recordTransaction(transaction);
-    }
-
-    public void completeTransaction(){
-
     }
 
     public void recordTransaction(Transaction transaction){

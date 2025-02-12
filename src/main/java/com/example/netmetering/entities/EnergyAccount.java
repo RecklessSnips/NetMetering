@@ -77,12 +77,24 @@ public class EnergyAccount {
         return availableBalance;
     }
 
-    public void setAvaliableBalance(BigDecimal availableBalance) {
+    public void setAvailableBalance(BigDecimal availableBalance) {
         this.availableBalance = availableBalance;
     }
 
     public BigDecimal getTransferedBalance() {
         return transferedBalance;
+    }
+
+    public void setTransferedBalance(BigDecimal transferedBalance) {
+        this.transferedBalance = transferedBalance;
+    }
+
+    public void setCumulativeIncome(BigDecimal cumulativeIncome) {
+        this.cumulativeIncome = cumulativeIncome;
+    }
+
+    public void setAverageIncome(BigDecimal averageIncome) {
+        this.averageIncome = averageIncome;
     }
 
     public BigDecimal getConsumedBalance() {

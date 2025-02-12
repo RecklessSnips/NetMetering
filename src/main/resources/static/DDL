@@ -17,7 +17,7 @@ CREATE TABLE energy_account (
     transferedBalance DECIMAL(18, 5),  -- 18 digits precision, 5 digits scale
     consumedBalance DECIMAL(18, 5),  -- 18 digits precision, 5 digits scale
     cumulativeIncome DECIMAL(18, 5),
-    averageIncome DECIMAL(18, 5),
+    averageIncome DECIMAL(18, 5)
 );
 
 

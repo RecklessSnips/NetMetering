@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -63,5 +64,10 @@ public class UserService {
         Transaction transaction = new Transaction(balance, user1.getAccount(), user2.getAccount());
         transactionService.initiateTransaction(transaction);
         return true;
+    }
+
+    public List<User> getGlobalAccounts(){
+        return List.of(userRepository.findByEmail("foodBank@gmail.com").get(),
+                userRepository.findByEmail("loblaws@gmail.com").get());
     }
 }

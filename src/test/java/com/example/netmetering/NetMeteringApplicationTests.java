@@ -9,10 +9,12 @@ import com.example.netmetering.service.UserService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 //@ContextConfiguration(classes = JpaConfig.class)
@@ -115,5 +117,34 @@ class NetMeteringApplicationTests {
             System.out.println("Failed");
         }
 
+    }
+
+    /*
+    Create fake users like Food bank, Loblaws
+     */
+    @Test
+    void createGlobalUsers() {
+        // Fake accounts
+        List<User> users = List.of(
+                new User("Weston", "Galen", "loblaws@gmail.com", "1 Presidents Choice Cir Brampton"),
+                new User("Rachael", "Wilson", "foodBank@gmail.com", "2001 Bantree Street Ottawa"));
+
+        // Default Account
+        // Use user's email for now
+        for (User user: users){
+            EnergyAccount account = new EnergyAccount(user, user.getEmail());
+            BigDecimal amount = new BigDecimal("0");
+            account.setEnergyBalance(amount);
+            account.setAvailableBalance(account.getEnergyBalance());
+            account.setConsumedBalance(amount);
+            account.setCumulativeIncome(amount);
+            account.setAverageIncome(amount);
+            account.setTransferedBalance(amount);
+            account.setUser(user);
+
+            // JPA relation
+            user.setAccount(account);
+        }
+        userRepository.saveAll(users);
     }
 }

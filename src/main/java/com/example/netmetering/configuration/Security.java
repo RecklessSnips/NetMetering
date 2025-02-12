@@ -39,7 +39,7 @@ public class Security {
                 .oauth2Login(
                         oauth2 -> {
                             oauth2.successHandler(authenSuccessHandler);
-                            oauth2.defaultSuccessUrl(URI + "/dashboard");
+//                            oauth2.defaultSuccessUrl(URI + "/dashboard");
                         }
                 )
                 .build();

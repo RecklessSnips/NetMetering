@@ -36,9 +36,29 @@ public class UserService {
         return userRepository.save(user);
     }
 
+    public void createUser(User user){
+        // Default Account
+        EnergyAccount account = new EnergyAccount(user, user.getEmail());
+        BigDecimal amount = new BigDecimal("0");
+        account.setEnergyBalance(amount);
+        account.setAvailableBalance(account.getEnergyBalance());
+        account.setConsumedBalance(amount);
+        account.setCumulativeIncome(amount);
+        account.setAverageIncome(amount);
+        account.setTransferedBalance(amount);
+        account.setUser(user);
+
+        account.setUser(user);
+        user.setAccount(account);
+
+        // 验证数据是否被保存
+        userRepository.save(user);
+    }
+
     public User findUserByEmail(String email){
         Optional<User> byEmail = userRepository.findByEmail(email);
-        return byEmail.orElseThrow(() -> new AccountException("User doesn't exist"));
+        return byEmail.orElse(null);
+//        return byEmail.orElseThrow(() -> new AccountException("User doesn't exist"));
     }
 
     public void deleteUser(User user){

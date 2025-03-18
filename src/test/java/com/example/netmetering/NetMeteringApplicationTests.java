@@ -126,8 +126,12 @@ class NetMeteringApplicationTests {
     void createGlobalUsers() {
         // Fake accounts
         List<User> users = List.of(
-                new User("Weston", "Galen", "loblaws@gmail.com", "1 Presidents Choice Cir Brampton"),
-                new User("Rachael", "Wilson", "foodBank@gmail.com", "2001 Bantree Street Ottawa"));
+                new User("Weston", "Galen",
+                        "loblaws@gmail.com",
+                        "loblaws",  "1 Presidents Choice Cir Brampton"),
+                new User("Rachael", "Wilson",
+                        "foodBank@gmail.com",
+                        "foodbank",  "2001 Bantree Street Ottawa"));
 
         // Default Account
         // Use user's email for now

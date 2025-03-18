@@ -4,6 +4,7 @@ CREATE TABLE user (
     family_name VARCHAR(255),
     full_name VARCHAR(255),
     email VARCHAR(255),
+    password VARCHAR(255),
     location VARCHAR(255),
     accountID VARCHAR(60) UNIQUE,  -- Foreign key linking to energy_account
     FOREIGN KEY (accountID) REFERENCES energy_account(accountID) ON DELETE CASCADE

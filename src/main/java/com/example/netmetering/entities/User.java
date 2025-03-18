@@ -14,6 +14,7 @@ public class User {
     private String family_name;
     private String full_name;
     private String email;
+    private String password;
     private String location;
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "accountID")
@@ -23,9 +24,10 @@ public class User {
         this.userID = String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 14) + System.currentTimeMillis();
     };
 
-    public User(String given_name, String family_name, String email, String location){
+    public User(String given_name, String family_name, String email, String password, String location){
         this.userID = String.valueOf(UUID.randomUUID()).replace("-", "").substring(0, 14) + System.currentTimeMillis();
         this.email = email;
+        this.password = password;
         this.given_name = given_name;
         this.family_name = family_name;
         this.full_name = given_name + " " + family_name;
@@ -42,6 +44,14 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public String getGiven_name() {

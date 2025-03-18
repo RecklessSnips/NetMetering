@@ -1,14 +1,16 @@
 package com.example.netmetering.configuration;
 
+import com.example.netmetering.IAM.user_details.CustomOAuth2UserService;
 import com.example.netmetering.configuration.handler.AuthenSuccessHandler;
+import com.example.netmetering.exception.handlers.CustomAuthenticationEntryPoint;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 import org.springframework.session.web.http.CookieSerializer;
 import org.springframework.session.web.http.DefaultCookieSerializer;
 import org.springframework.web.cors.CorsConfiguration;
@@ -21,7 +23,13 @@ import java.util.Arrays;
 public class Security {
 
     @Autowired
-    private  AuthenSuccessHandler authenSuccessHandler;
+    private AuthenSuccessHandler authenSuccessHandler;
+
+    @Autowired
+    private CustomOAuth2UserService oAuth2UserService;
+
+    @Autowired
+    private CustomAuthenticationEntryPoint authenticationEntryPoint;
 
     private final String URI = "http://localhost:5173";
 
@@ -33,14 +41,23 @@ public class Security {
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(auth -> {
-                    auth.requestMatchers("/login").permitAll();
+                    auth.requestMatchers("/login", "/auth/login", "/auth/register").permitAll();
                     auth.anyRequest().authenticated();
                 })
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                )
                 .oauth2Login(
                         oauth2 -> {
+                            oauth2.userInfoEndpoint(
+                                    userInfo -> userInfo.userService(oAuth2UserService)
+                            );
                             oauth2.successHandler(authenSuccessHandler);
-//                            oauth2.defaultSuccessUrl(URI + "/dashboard");
                         }
+                )
+                .sessionManagement(session -> session
+                        // Allow creating session
+                        .sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED)
                 )
                 .build();
     }

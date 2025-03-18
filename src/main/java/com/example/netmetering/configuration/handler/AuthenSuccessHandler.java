@@ -3,11 +3,14 @@ package com.example.netmetering.configuration.handler;
 import com.example.netmetering.entities.EnergyAccount;
 import com.example.netmetering.entities.User;
 import com.example.netmetering.repository.UserRepository;
+import com.example.netmetering.service.UserService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
+import org.springframework.security.oauth2.core.user.DefaultOAuth2User;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.DefaultRedirectStrategy;
 import org.springframework.security.web.RedirectStrategy;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
@@ -27,6 +30,9 @@ public class AuthenSuccessHandler implements AuthenticationSuccessHandler {
     private final RedirectStrategy redirectStrategy = new DefaultRedirectStrategy();
 
     @Autowired
+    private UserService userService;
+
+    @Autowired
     private UserRepository userRepository;
 
     final String URI = "http://localhost:5173";
@@ -35,21 +41,35 @@ public class AuthenSuccessHandler implements AuthenticationSuccessHandler {
     public void onAuthenticationSuccess(HttpServletRequest request,
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException {
-        System.out.println("response: ");
-        System.out.println(response.getHeaderNames());
-        System.out.println(response.getHeader("Set-Cookie"));
         // Get unprocessed request
         SavedRequest savedRequest = requestCache.getRequest(request, response);
-        DefaultOidcUser oidcUser = (DefaultOidcUser) authentication.getPrincipal();
 
-        String email = oidcUser.getEmail();
+        Object principal = authentication.getPrincipal();
+        System.out.println("Authentication: ");
+        System.out.println(authentication);
+        System.out.println(authentication.getName());
+        System.out.println(authentication.getDetails());
+        System.out.println(authentication.getCredentials());
+        System.out.println(authentication.getPrincipal());
+        System.out.println(authentication.isAuthenticated());
+
+        OAuth2User oAuth2User = null;
+        if(principal instanceof DefaultOidcUser){
+            // Google user
+            System.out.println("Google");
+            oAuth2User = (DefaultOidcUser) principal;
+        }else if(principal instanceof DefaultOAuth2User){
+            // Facebook user
+            System.out.println("Facebook");
+            oAuth2User = (DefaultOAuth2User) principal;
+        }
+
+        String email = oAuth2User.getAttribute("email");
         Optional<User> op = userRepository.findByEmail(email);
         // If exists, use that account, if not, register a new one
         boolean present = op.isPresent();
         if(!present){
-            User user = getUser(oidcUser);
-            // Register user
-            userRepository.save(user);
+            registerUser(oAuth2User);
         }
         // Redirect to the old page (or login page where the User left)
         if (savedRequest != null) {
@@ -68,19 +88,27 @@ public class AuthenSuccessHandler implements AuthenticationSuccessHandler {
         }
     }
 
-    private User getUser(DefaultOidcUser oidcUser) {
-        // User from Google
-        User user = new User(oidcUser.getGivenName(), oidcUser.getFamilyName(),
-                oidcUser.getEmail(), null);
+    private void registerUser(OAuth2User oauth2User) {
+        User user = null;
+        if(oauth2User instanceof DefaultOidcUser){
+            // User from Google
+            DefaultOidcUser googleUser = (DefaultOidcUser) oauth2User;
+            // Oauth2 user doesn't have a password in our database
+            user = new User(googleUser.getGivenName(), googleUser.getFamilyName(),
+                    googleUser.getEmail(), "", null);
+        }else if (oauth2User instanceof DefaultOAuth2User){
+            DefaultOAuth2User faceBookUser = (DefaultOAuth2User) oauth2User;
+            String name = faceBookUser.getAttribute("name");
+            String email = faceBookUser.getAttribute("email");
+            String[] split = name.split(" ");
+            String givenName = split[0];
+            String familyName = split[1];
+            // Oauth2 user doesn't have a password in our database
+            user = new User(givenName, familyName,
+                    email,"", null);
+        }
 
-        // Default Account
-        // Use user's email for now
-        EnergyAccount account = new EnergyAccount(user, user.getEmail());
-        account.setEnergyBalance(new BigDecimal("0"));
-        account.setUser(user);
-
-        // JPA relation
-        user.setAccount(account);
-        return user;
+        // Register user
+        userService.createUser(user);
     }
 }

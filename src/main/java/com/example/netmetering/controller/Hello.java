@@ -46,22 +46,4 @@ public class Hello {
         }
         return authToken;
     }
-
-    @GetMapping("/api/logout")
-    public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        SecurityContextHolder.clearContext();  // 清除认证信息
-        HttpSession session = request.getSession(false);
-        if (session != null) {
-            session.invalidate();  // 销毁会话
-        }
-
-        Cookie cookie = new Cookie("JSESSIONID", null);
-        cookie.setHttpOnly(true);
-        cookie.setSecure(false);  // 若启用 HTTPS，这里改为 true
-        cookie.setPath("/");
-        cookie.setMaxAge(0);
-        response.addCookie(cookie);
-
-        return ResponseEntity.ok("Logout successful");
-    }
 }

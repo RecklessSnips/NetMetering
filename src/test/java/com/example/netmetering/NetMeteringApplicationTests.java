@@ -151,4 +151,15 @@ class NetMeteringApplicationTests {
         }
         userRepository.saveAll(users);
     }
+
+    @Test
+    void testGetTransactions(){
+        transactionService.getALlTransactions();
+    }
+
+    @Test
+    void testGetTransactionByID(){
+//        transactionService.getTransactionByFromID("1224a73137ad401742268328431");
+        transactionService.getTransactionByFromID("8e37c2d878b8411742228072819");
+    }
 }

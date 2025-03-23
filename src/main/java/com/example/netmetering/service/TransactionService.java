@@ -11,6 +11,8 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.Iterator;
+import java.util.List;
 
 @Service
 public class TransactionService {
@@ -49,5 +51,22 @@ public class TransactionService {
         userRepository.save(transaction.getFromAccount().getUser());
         userRepository.save(transaction.getToAccount().getUser());
         transactionRepository.save(transaction);
+    }
+
+    public List<Transaction> getTransactionByFromID(String fromID){
+        return transactionRepository.findByFromAccountID(fromID);
+    }
+
+    public void getALlTransactions(){
+        Iterable<Transaction> all = transactionRepository.findAll();
+        all.forEach(System.out::println);
+        System.out.println("---------------------");
+        Iterator<Transaction> iterator = all.iterator();
+        int count = 0;
+        while(iterator.hasNext()){
+            System.out.println(iterator.next());
+            count++;
+        }
+        System.out.println(count);
     }
 }

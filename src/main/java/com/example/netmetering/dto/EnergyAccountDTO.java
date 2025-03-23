@@ -13,6 +13,8 @@ public class EnergyAccountDTO {
     private BigDecimal cumulativeIncome;
     private BigDecimal averageIncome;
 
+    public EnergyAccountDTO(){}
+
     public EnergyAccountDTO(EnergyAccount account) {
         this.email = account.getEmail();
         this.energyBalance = account.getEnergyBalance();
@@ -51,5 +53,31 @@ public class EnergyAccountDTO {
         return averageIncome;
     }
 
+    public void setEmail(String email) {
+        this.email = email;
+    }
 
+    public void setEnergyBalance(BigDecimal energyBalance) {
+        this.energyBalance = energyBalance;
+    }
+
+    public void setAvailableBalance(BigDecimal availableBalance) {
+        this.availableBalance = availableBalance;
+    }
+
+    public void setTransferedBalance(BigDecimal transferedBalance) {
+        this.transferedBalance = transferedBalance;
+    }
+
+    public void setConsumedBalance(BigDecimal consumedBalance) {
+        this.consumedBalance = consumedBalance;
+    }
+
+    public void setCumulativeIncome(BigDecimal cumulativeIncome) {
+        this.cumulativeIncome = cumulativeIncome;
+    }
+
+    public void setAverageIncome(BigDecimal averageIncome) {
+        this.averageIncome = averageIncome;
+    }
 }

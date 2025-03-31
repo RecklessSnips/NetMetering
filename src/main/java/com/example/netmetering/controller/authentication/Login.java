@@ -27,9 +27,9 @@ public class Login {
     private AuthManager authManager;
 
     /*
-    该 REST API 登录认证，不会进入到 spring 的 AuthenticationSuccessHandler，
-    因为 AuthenticationSuccessHandler 主要用于 Spring Security
-    处理 formLogin() 或 oauth2Login() 的成功认证
+    This Rest API login will not entering spring's AuthenticationSuccessHandler，
+    Because AuthenticationSuccessHandler is used for Spring Security
+    to handle the successful login for formLogin() or oauth2Login()
      */
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginDTO loginRequest,
@@ -59,15 +59,15 @@ public class Login {
 
     @GetMapping("/logout")
     public ResponseEntity<String> logout(HttpServletRequest request, HttpServletResponse response) {
-        SecurityContextHolder.clearContext();  // 清除认证信息
+        SecurityContextHolder.clearContext();
         HttpSession session = request.getSession(false);
         if (session != null) {
-            session.invalidate();  // 销毁会话
+            session.invalidate();
         }
 
         Cookie cookie = new Cookie("JSESSIONID", null);
         cookie.setHttpOnly(true);
-        cookie.setSecure(false);  // 若启用 HTTPS，这里改为 true
+        cookie.setSecure(false);
         cookie.setPath("/");
         cookie.setMaxAge(0);
         response.addCookie(cookie);

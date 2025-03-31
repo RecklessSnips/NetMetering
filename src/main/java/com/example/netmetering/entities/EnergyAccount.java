@@ -109,6 +109,11 @@ public class EnergyAccount {
         return cumulativeIncome;
     }
 
+    public void increaseEnergyBalance(BigDecimal amount){
+        this.energyBalance = this.energyBalance.add(amount);
+        this.availableBalance = this.availableBalance.add(amount);
+    }
+
     public void increaseTransferedBalance(BigDecimal balance){
         this.transferedBalance = this.transferedBalance.add(balance);
     }

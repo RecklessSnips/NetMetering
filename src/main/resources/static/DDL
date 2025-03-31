@@ -31,3 +31,12 @@ CREATE TABLE transaction (
     FOREIGN KEY (fromAccountID) REFERENCES energy_account(accountID) ON DELETE CASCADE,
     FOREIGN KEY (toAccountID) REFERENCES energy_account(accountID) ON DELETE CASCADE
 );
+
+CREATE TABLE contacts (
+    userID VARCHAR(60),
+    contactID VARCHAR(60),
+    dateAdded TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    PRIMARY KEY (userID, contactID),
+    FOREIGN KEY (userID) REFERENCES user(userID) ON DELETE CASCADE,
+    FOREIGN KEY (contactID) REFERENCES user(userID) ON DELETE CASCADE
+);

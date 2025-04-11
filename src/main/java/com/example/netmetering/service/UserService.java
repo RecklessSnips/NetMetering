@@ -48,7 +48,7 @@ public class UserService {
         account.setEnergyBalance(amount);
         account.setAvailableBalance(account.getEnergyBalance());
         account.setConsumedBalance(amount);
-        account.setCumulativeIncome(amount);
+        account.setCumulativeIncome(account.getEnergyBalance());
         account.setAverageIncome(amount);
         account.setTransferedBalance(amount);
         account.setUser(user);
@@ -56,7 +56,6 @@ public class UserService {
         account.setUser(user);
         user.setAccount(account);
 
-        // 验证数据是否被保存
         userRepository.save(user);
     }
 
@@ -83,7 +82,6 @@ public class UserService {
          */
         BigDecimal energyBalance = user1.getAccount().getAvaliableBalance();
         if (energyBalance.compareTo(balance) < 0){
-            System.out.println("AHHO");
             throw new AccountException("Not enough energy balance!");
         }
         Transaction transaction = new Transaction(balance, user1.getAccount(), user2.getAccount());
@@ -98,8 +96,11 @@ public class UserService {
     }
 
     public List<User> getGlobalAccounts(){
-        return List.of(userRepository.findByEmail("foodBank@gmail.com").get(),
-                userRepository.findByEmail("loblaws@gmail.com").get());
+//        TODO: Change back
+//        Recover loblaws after presentation
+//        return List.of(userRepository.findByEmail("foodBank@gmail.com").get(),
+//                userRepository.findByEmail("loblaws@gmail.com").get());
+        return List.of(userRepository.findByEmail("foodBank@gmail.com").get());
     }
 
     // Return the current logged in user

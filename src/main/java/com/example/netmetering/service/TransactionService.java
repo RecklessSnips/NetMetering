@@ -2,7 +2,6 @@ package com.example.netmetering.service;
 
 import com.example.netmetering.entities.EnergyAccount;
 import com.example.netmetering.entities.Transaction;
-import com.example.netmetering.entities.User;
 import com.example.netmetering.repository.TransactionRepository;
 import com.example.netmetering.repository.UserRepository;
 import com.example.netmetering.util.Energy;
@@ -38,6 +37,7 @@ public class TransactionService {
         BigDecimal income = energy.getDollars();
         // Start
         account2.increaseCumulativeIncome(income);
+        account1.decreaseCumulativeIncome(income);
 
         // Increase account1's transfered balance
         account1.increaseTransferedBalance(amount);

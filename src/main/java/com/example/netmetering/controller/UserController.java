@@ -30,12 +30,9 @@ public class UserController {
     @GetMapping("/info")
     public ResponseEntity<?> getCurrentUser(){
         User currentUser = userService.getCurrentUser();
-        if (currentUser != null){
-            return ResponseEntity.ok(new UserDTO(currentUser));
-        }else {
-            return ResponseEntity.badRequest().body("Cannot find any current logged in user");
-        }
-
+        return currentUser != null
+                ? ResponseEntity.ok(new UserDTO(currentUser))
+                : ResponseEntity.badRequest().body("Cannot find any current logged in user");
     }
 
     /*

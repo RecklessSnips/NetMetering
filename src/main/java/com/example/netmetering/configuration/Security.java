@@ -35,8 +35,6 @@ public class Security {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception{
-        // use Cookie store Token
-        //                        .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
         return httpSecurity
                 .cors(Customizer.withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)

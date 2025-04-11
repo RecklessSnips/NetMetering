@@ -1,5 +1,6 @@
 package com.example.netmetering.entities;
 
+import com.example.netmetering.util.Energy;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -14,11 +15,17 @@ public class EnergyAccount {
     @OneToOne(mappedBy = "account")
     private User user;
     private String email;
+    // Total energy generated (never decrease)
     private BigDecimal energyBalance;
+    // Energy to transfer (same as total energy but can decrease)
     private BigDecimal availableBalance;
+    // Energy transfered
     private BigDecimal transferedBalance;
+    // Consumed by the customer
     private BigDecimal consumedBalance;
+    // calculated through the availableBalance
     private BigDecimal cumulativeIncome;
+    // Not decided yet
     private BigDecimal averageIncome;
 
     public EnergyAccount(){
@@ -41,7 +48,6 @@ public class EnergyAccount {
     }
 
     public void withdrawEnergy(BigDecimal amount){
-        this.energyBalance = this.energyBalance.subtract(amount);
         this.availableBalance = this.availableBalance.subtract(amount);
     }
 
@@ -109,9 +115,12 @@ public class EnergyAccount {
         return cumulativeIncome;
     }
 
+    // Increase both total energy and available energy
     public void increaseEnergyBalance(BigDecimal amount){
         this.energyBalance = this.energyBalance.add(amount);
         this.availableBalance = this.availableBalance.add(amount);
+        // When deposit, the income will increase accordingly
+        increaseCumulativeIncome(new Energy(availableBalance).getDollars());
     }
 
     public void increaseTransferedBalance(BigDecimal balance){

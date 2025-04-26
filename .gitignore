@@ -33,3 +33,5 @@ build/
 .vscode/
 
 application.yml
+
+src/main/java/com/example/netmetering/configuration/JpaConfig.java

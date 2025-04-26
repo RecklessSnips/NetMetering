@@ -18,12 +18,10 @@ public class Transaction {
 
     @ManyToOne
     @JoinColumn(name = "fromAccountID", referencedColumnName = "accountID")
-//    @OnDelete(action = OnDeleteAction.SET_NULL)
     private EnergyAccount fromAccount;
 
     @ManyToOne
     @JoinColumn(name = "toAccountID", referencedColumnName = "accountID")
-//    @OnDelete(action = OnDeleteAction.SET_NULL)
     private EnergyAccount toAccount;
     private BigDecimal amount;
     private Date dateTime;

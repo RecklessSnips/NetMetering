@@ -19,15 +19,7 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class JpaConfig {
 
-    @Bean
-    public DataSource dataSource(){
-        HikariDataSource hikariDataSource = new HikariDataSource();
-        hikariDataSource.setUsername("root");
-        hikariDataSource.setPassword("19960214At313!");
-        hikariDataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
-        hikariDataSource.setJdbcUrl("jdbc:mysql://localhost:3306/net_metering?useSSL=false&serverTimezone=UTC&allowPublicKeyRetrieval=true");
-        return hikariDataSource;
-    }
+
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactory() {

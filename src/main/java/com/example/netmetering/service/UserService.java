@@ -27,6 +27,7 @@ public class UserService {
     private TransactionService transactionService;
 
     public User createUser(){
+        // For test
         User user = new User();
         user.setGiven_name("Ahsoka");
         user.setLocation("Coruscant");
@@ -37,7 +38,6 @@ public class UserService {
         account.setUser(user);
         user.setAccount(account);
 
-        // 验证数据是否被保存
         return userRepository.save(user);
     }
 
